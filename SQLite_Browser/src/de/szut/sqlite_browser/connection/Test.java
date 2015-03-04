@@ -1,4 +1,4 @@
-package de.szut.sqlite_browser.gui;
+package de.szut.sqlite_browser.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
