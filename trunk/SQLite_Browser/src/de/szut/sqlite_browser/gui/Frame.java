@@ -68,7 +68,7 @@ public class Frame extends JFrame {
 		getContentPane().setLayout(null);
 
 		scrollPaneDataBaseTree = new JScrollPane();
-		scrollPaneDataBaseTree.setBounds(0, 0, 148, 541);
+		scrollPaneDataBaseTree.setBounds(0, 11, 148, 530);
 		getContentPane().add(scrollPaneDataBaseTree);
 
 		dataBaseTree = new JTree();
