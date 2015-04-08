@@ -4,12 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import de.szut.sqlite_browser.connection.Connector;
+import de.szut.sqlite_browser.gui.Surface;
 
 public class Model {
 
 	private Connector connector;
 
-	public Model() {
+	public Model(Surface surface) {
 		connector = new Connector();
 	}
 
