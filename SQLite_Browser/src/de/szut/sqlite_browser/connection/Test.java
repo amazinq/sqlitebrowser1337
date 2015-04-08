@@ -11,7 +11,7 @@ public class Test {
 	    Connection c = null;
 	    try {
 	      Class.forName("org.sqlite.JDBC");
-	      c = DriverManager.getConnection("jdbc:sqlite:H:/eclipse/workspace/SQLite_Browser/db/World.db3");
+	      c = DriverManager.getConnection("jdbc:sqlite:C:/Users/Steffen/git/sqlitebrowser1337/SQLite_Browser/db/World.db3");
 	    } catch ( Exception e ) {
 	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	      System.exit(0);
@@ -31,7 +31,7 @@ public class Test {
 	    try {
 			ResultSet rs = c.createStatement().executeQuery("Select * from Country");
 			while(rs.next()) {
-				//System.out.println(rs.getString(1));
+				System.out.println(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

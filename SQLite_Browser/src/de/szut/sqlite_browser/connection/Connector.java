@@ -28,6 +28,10 @@ public class Connector {
 		}
 	}
 	
+	public ResultSet getTables() throws SQLException {
+		return connection.getMetaData().getTables(null, null, "%", null);
+	}
+	
 	public ResultSet executeQuery(String query) {
 		try {
 			return connection.createStatement().executeQuery(query);
@@ -38,6 +42,7 @@ public class Connector {
 		}
 	}
 	
+
 	public void closeConnection() {
 		try {
 			connection.close();
