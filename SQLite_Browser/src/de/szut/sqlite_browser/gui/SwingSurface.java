@@ -2,6 +2,7 @@ package de.szut.sqlite_browser.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ public class SwingSurface extends JPanel implements Surface {
 	private JTextField limitLowerBoundTextField;
 	private JTextField limitUpperBoundTextField;
 	private JTree dataBaseTree;
+	private DefaultMutableTreeNode topNode;
 
 	public SwingSurface() {
 		setLayout(new BorderLayout(0, 0));
@@ -90,7 +92,7 @@ public class SwingSurface extends JPanel implements Surface {
 		JScrollPane treeScrollPane = new JScrollPane();
 		splitPane.setLeftComponent(treeScrollPane);
 		
-		DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Database");
+		topNode = new DefaultMutableTreeNode("Database");
 		dataBaseTree = new JTree(topNode);
 		dataBaseTree.addTreeSelectionListener(e -> {
 			DefaultMutableTreeNode n = (DefaultMutableTreeNode)dataBaseTree.getLastSelectedPathComponent();
@@ -103,9 +105,11 @@ public class SwingSurface extends JPanel implements Surface {
 	}
 	
 	@Override
-	public void updateTree() {
-		// TODO Auto-generated method stub
-		
+	public void updateTree(ArrayList<String> tableNames) {
+		for(String name : tableNames) {
+			topNode.add(new DefaultMutableTreeNode(name));
+		}
+		repaint();
 	}
 
 	@Override

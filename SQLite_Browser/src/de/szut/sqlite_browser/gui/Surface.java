@@ -1,9 +1,11 @@
 package de.szut.sqlite_browser.gui;
 
-public interface Surface {
+import java.util.ArrayList;
 
-	public void updateTree();
+public interface Surface {
 	
 	public void updateDataList();
+
+	public void updateTree(ArrayList<String> tableNames);
 	
 }
