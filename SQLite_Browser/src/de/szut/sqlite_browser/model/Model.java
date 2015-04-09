@@ -35,14 +35,24 @@ public class Model {
 			}
 	}
 	
-	public void executeQuery(String tableName) {
+	public void executeQuery(String query) {
 		Object[][] data;
 		String[] columnNames;
 		ResultSet queryResult;
 		ResultSet numberOfRows;
 		ResultSetMetaData queryResultMetaData;
+		String tableName;
 		try {
-			queryResult = connector.executeQuery("Select * from " + tableName);
+			query = query.toLowerCase();
+			queryResult = connector.executeQuery(query);
+			String[] queryArray = query.split(" ");
+			
+			int iterator = 0;
+			while(!queryArray[iterator].contains("from")) {
+				iterator++;
+			}
+			
+			tableName = queryArray[iterator +1];
 			numberOfRows = connector.executeQuery("Select count(*) from " + tableName);
 			queryResultMetaData = queryResult.getMetaData();
 			numberOfRows.next();

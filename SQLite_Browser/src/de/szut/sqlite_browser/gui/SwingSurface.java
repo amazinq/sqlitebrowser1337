@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -84,7 +85,14 @@ public class SwingSurface extends JPanel implements Surface {
 		commandTextField = new JTextField();
 		commandPanel.add(commandTextField);
 		commandTextField.setColumns(10);
-
+		
+		JButton executeQueryButton = new JButton("Execute Query");
+		commandPanel.add(executeQueryButton, BorderLayout.EAST);
+		executeQueryButton.addActionListener(e -> {
+			model.executeQuery(commandTextField.getText());
+		});
+		
+		
 		tableScrollPane = new JScrollPane();
 		dataPanel.add(tableScrollPane, BorderLayout.CENTER);
 		dataTable = new JTable();
@@ -102,7 +110,7 @@ public class SwingSurface extends JPanel implements Surface {
 					.getLastSelectedPathComponent();
 			if (connectionEnabled) {
 				if (n.getChildCount() == 0) {
-					model.executeQuery((String) n.getUserObject());
+					model.executeQuery("Select * from " + (String) n.getUserObject());
 				}
 			}
 		});
