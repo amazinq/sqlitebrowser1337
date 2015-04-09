@@ -25,6 +25,9 @@ public class SwingSurface extends JPanel implements Surface {
 	 * 
 	 */
 	private static final long serialVersionUID = -1327566355315618207L;
+	private static final String CONNECTED_TEXT = "Connected to Database ";
+	private static final String DISCONNECTED_TEXT = "Not connected ";
+	
 	private JTextField commandTextField;
 	private JTable dataTable;
 	private JTextField limitLowerBoundTextField;
@@ -32,6 +35,7 @@ public class SwingSurface extends JPanel implements Surface {
 	private JTree dataBaseTree;
 	private DefaultMutableTreeNode topNode;
 	private Model model;
+	private JLabel stateLabel;
 
 	public SwingSurface() {
 		setLayout(new BorderLayout(0, 0));
@@ -39,7 +43,7 @@ public class SwingSurface extends JPanel implements Surface {
 		add(statePanel, BorderLayout.SOUTH);
 		statePanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel stateLabel = new JLabel("MySQL Connected ");
+		stateLabel = new JLabel(DISCONNECTED_TEXT);
 		stateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		statePanel.add(stateLabel, BorderLayout.NORTH);
 		
@@ -78,16 +82,6 @@ public class SwingSurface extends JPanel implements Surface {
 		JScrollPane tableScrollPane = new JScrollPane();
 		dataPanel.add(tableScrollPane, BorderLayout.CENTER);
 		dataTable = new JTable();
-		dataTable.setModel(new DefaultTableModel(new Object[][] {
-				{ "7", null, null, null, null, null },
-				{ null, null, null, null, null, null },
-				{ null, "13", null, null, null, null },
-				{ null, null, null, null, null, null },
-				{ null, null, null, null, null, null },
-				{ null, null, null, null, null, null },
-				{ null, null, null, null, null, null }, }, new String[] {
-				"New column", "New column", "New column", "New column",
-				"New column", "New column" }));
 		dataTable.getTableHeader().setReorderingAllowed(false);
 		dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tableScrollPane.setViewportView(dataTable);
@@ -100,7 +94,7 @@ public class SwingSurface extends JPanel implements Surface {
 		dataBaseTree.addTreeSelectionListener(e -> {
 			DefaultMutableTreeNode n = (DefaultMutableTreeNode)dataBaseTree.getLastSelectedPathComponent();
 			if(n.getChildCount() == 0){
-				model.executeQuery("Select * from " + (String) n.getUserObject());
+				model.executeQuery((String) n.getUserObject());
 			}
 		});
 		dataBaseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -124,6 +118,16 @@ public class SwingSurface extends JPanel implements Surface {
 	@Override
 	public void setModel(Model model) {
 		this.model = model;
+	}
+
+	@Override
+	public void setConnectionEnabled(boolean connectionEnabled) {
+		if(connectionEnabled) {
+			stateLabel.setText(CONNECTED_TEXT);
+		} else {
+			stateLabel.setText(DISCONNECTED_TEXT);
+		}
+		
 	}
 
 }

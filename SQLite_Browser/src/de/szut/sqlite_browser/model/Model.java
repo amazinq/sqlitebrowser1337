@@ -28,25 +28,46 @@ public class Model {
 					tableNames.add(tables.getString(3));
 				}
 				surface.updateTree(tableNames);
+				surface.setConnectionEnabled(true);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				surface.setConnectionEnabled(false);
 				e.printStackTrace();
 			}
 	}
 	
-	public void executeQuery(String query) {
+	public void executeQuery(String tableName) {
 		Object[][] data;
 		String[] columnNames;
 		ResultSet queryResult;
+		ResultSet numberOfRows;
 		ResultSetMetaData queryResultMetaData;
 		try {
-			queryResult = connector.executeQuery(query);
+			queryResult = connector.executeQuery("Select * from " + tableName);
+			numberOfRows = connector.executeQuery("Select count(*) from " + tableName);
 			queryResultMetaData = queryResult.getMetaData();
-			columnNames = new String[queryResultMetaData.getColumnCount() -1];
-			for(int i = 1; i < queryResultMetaData.getColumnCount(); i++) {
+			numberOfRows.next();
+			columnNames = new String[queryResultMetaData.getColumnCount()];
+			for(int i = 1; i <= queryResultMetaData.getColumnCount(); i++) {
 				columnNames[i-1] = queryResultMetaData.getColumnName(i);
 			}
-			surface.updateDataList(null, columnNames);
+			data = new Object[numberOfRows.getInt(1)][queryResultMetaData.getColumnCount()];
+			int counter = 0;
+			while(queryResult.next()) {
+				for(int i = 0; i < queryResultMetaData.getColumnCount(); i++) {
+					data[counter][i] = queryResult.getString(i+1);
+				}
+				counter++;
+			}
+			surface.updateDataList(data, columnNames);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void closeConnection() {
+		try {
+			connector.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

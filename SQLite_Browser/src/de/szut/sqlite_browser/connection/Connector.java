@@ -30,12 +30,7 @@ public class Connector {
 		return connection.createStatement().executeQuery(query);
 	}
 
-	public void closeConnection() {
-		try {
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void closeConnection() throws SQLException {
+		connection.close();
 	}
 }

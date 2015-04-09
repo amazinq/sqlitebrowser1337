@@ -12,4 +12,6 @@ public interface Surface {
 	
 	public void setModel(Model model);
 	
+	public void setConnectionEnabled(boolean connectionEnabled);
+	
 }
