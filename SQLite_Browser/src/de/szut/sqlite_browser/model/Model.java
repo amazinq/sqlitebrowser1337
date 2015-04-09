@@ -35,16 +35,28 @@ public class Model {
 			}
 	}
 	
-	public void executeQuery(String query) {
+	public void executeQuery(String query, String lowerBound, String upperBound) {
 		Object[][] data;
 		String[] columnNames;
 		ResultSet queryResult;
 		ResultSet numberOfRows;
 		ResultSetMetaData queryResultMetaData;
 		String tableName;
+		String limitString;
+		query = query.toLowerCase();
+		
+		if(lowerBound == null || upperBound == null ||query.contains("limit")) {
+			limitString = "";
+		} else {
+//			ÜBERLEGEN WEGEN LIMIT!!!!
+			limitString = " limit " + String.valueOf(Integer.parseInt(lowerBound) -1)
+					+" , " + (String.valueOf((Integer.parseInt(upperBound) - Integer.parseInt(lowerBound)+1)));
+		}
+		
+		
 		try {
-			query = query.toLowerCase();
-			queryResult = connector.executeQuery(query);
+			
+			queryResult = connector.executeQuery(query + limitString);
 			String[] queryArray = query.split(" ");
 			
 			int iterator = 0;
@@ -68,6 +80,8 @@ public class Model {
 				}
 				counter++;
 			}
+			queryResult.close();
+			numberOfRows.close();
 			surface.updateDataList(data, columnNames);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

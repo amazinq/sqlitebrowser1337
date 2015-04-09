@@ -85,14 +85,27 @@ public class SwingSurface extends JPanel implements Surface {
 		commandTextField = new JTextField();
 		commandPanel.add(commandTextField);
 		commandTextField.setColumns(10);
-		
+
 		JButton executeQueryButton = new JButton("Execute Query");
 		commandPanel.add(executeQueryButton, BorderLayout.EAST);
 		executeQueryButton.addActionListener(e -> {
-			model.executeQuery(commandTextField.getText());
+			if(connectionEnabled) {
+				if (limitCheckBox.isSelected()) {
+					String lowerBound = limitLowerBoundTextField.getText();
+					String upperBound = limitUpperBoundTextField.getText();
+					if (isAValidNumber(lowerBound, upperBound)) {
+						model.executeQuery(commandTextField.getText(), lowerBound, upperBound);
+					} else {
+	//					ERRORMESSAGE!!! invalid number
+					}
+				} else {
+					model.executeQuery(commandTextField.getText(), null, null);
+				}
+			} else {
+//				ERRORMESSAGE!!! no connection
+			}
 		});
-		
-		
+
 		tableScrollPane = new JScrollPane();
 		dataPanel.add(tableScrollPane, BorderLayout.CENTER);
 		dataTable = new JTable();
@@ -109,9 +122,23 @@ public class SwingSurface extends JPanel implements Surface {
 			DefaultMutableTreeNode n = (DefaultMutableTreeNode) dataBaseTree
 					.getLastSelectedPathComponent();
 			if (connectionEnabled) {
-				if (n.getChildCount() == 0) {
-					model.executeQuery("Select * from " + (String) n.getUserObject());
+				if (limitCheckBox.isSelected()) {
+					String lowerBound = limitLowerBoundTextField.getText();
+					String upperBound = limitUpperBoundTextField.getText();
+					if (isAValidNumber(lowerBound, upperBound)) {
+						if (n.getChildCount() == 0) {
+							model.executeQuery("Select * from " + (String) n.getUserObject(), lowerBound, upperBound);
+						}
+					} else {
+//						ERRORMESSAGE!! invalid number
+					}
+				} else {
+					if (n.getChildCount() == 0) {
+						model.executeQuery("Select * from " + (String) n.getUserObject(), null, null);
+					}
 				}
+			} else {
+//				ERRORMESSAGE!!! no connection
 			}
 		});
 		dataBaseTree.getSelectionModel().setSelectionMode(
@@ -156,5 +183,21 @@ public class SwingSurface extends JPanel implements Surface {
 		}
 		dataBaseTree.repaint();
 		dataBaseTree.collapsePath(new TreePath(topNode.getPath()));
+	}
+
+	private boolean isAValidNumber(String lowerBound, String upperBound) {
+		try {
+			int tempLowerBound = Integer.parseInt(lowerBound);
+			int tempUpperBound = Integer.parseInt(upperBound);
+			if (tempLowerBound < 0) {
+				return false;
+			}
+			if (tempUpperBound < tempLowerBound) {
+				return false;
+			}
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 }
