@@ -68,6 +68,9 @@ public class Model {
 	public void closeConnection() {
 		try {
 			connector.closeConnection();
+			surface.updateDataList(null, null);
+			surface.setConnectionEnabled(false);
+			surface.clearTree();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

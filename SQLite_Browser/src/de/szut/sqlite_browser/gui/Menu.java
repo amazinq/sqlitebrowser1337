@@ -28,6 +28,15 @@ public class Menu extends JMenuBar {
 		JMenu fileMenu = new JMenu("File");
 		add(fileMenu);
 		
+		JMenu dataBaseMenu = new JMenu("Database");
+		add(dataBaseMenu);
+		
+		JMenuItem disconnectMenuItem = new JMenuItem("Disconnect");
+		dataBaseMenu.add(disconnectMenuItem);
+		disconnectMenuItem.addActionListener(e -> {
+			model.closeConnection();
+		});
+		
 		JMenuItem openDataBaseMenuItem = new JMenuItem("Open Database");
 		fileMenu.add(openDataBaseMenuItem);
 		openDataBaseMenuItem.addActionListener(e -> {
@@ -40,8 +49,6 @@ public class Menu extends JMenuBar {
 				model.openConnection(fileChooser.getSelectedFile().getAbsolutePath());
 			}
 				
-		});
-		
-		
+		});	
 	}
 }

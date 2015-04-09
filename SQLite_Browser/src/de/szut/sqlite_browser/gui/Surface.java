@@ -14,4 +14,6 @@ public interface Surface {
 	
 	public void setConnectionEnabled(boolean connectionEnabled);
 	
+	public void clearTree();
+	
 }
