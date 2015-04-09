@@ -10,7 +10,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		Surface surface = new SwingSurface();
-		new Frame(surface, new Menu(new Model(surface)));
+		Model model = new Model(surface);
+		surface.setModel(model);
+		new Frame(surface, new Menu(model));
 
 	}
 

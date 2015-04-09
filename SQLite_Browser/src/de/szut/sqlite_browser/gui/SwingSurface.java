@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import de.szut.sqlite_browser.model.Model;
+
 public class SwingSurface extends JPanel implements Surface {
 
 	/**
@@ -29,6 +31,7 @@ public class SwingSurface extends JPanel implements Surface {
 	private JTextField limitUpperBoundTextField;
 	private JTree dataBaseTree;
 	private DefaultMutableTreeNode topNode;
+	private Model model;
 
 	public SwingSurface() {
 		setLayout(new BorderLayout(0, 0));
@@ -76,9 +79,9 @@ public class SwingSurface extends JPanel implements Surface {
 		dataPanel.add(tableScrollPane, BorderLayout.CENTER);
 		dataTable = new JTable();
 		dataTable.setModel(new DefaultTableModel(new Object[][] {
+				{ "7", null, null, null, null, null },
 				{ null, null, null, null, null, null },
-				{ null, null, null, null, null, null },
-				{ null, null, null, null, null, null },
+				{ null, "13", null, null, null, null },
 				{ null, null, null, null, null, null },
 				{ null, null, null, null, null, null },
 				{ null, null, null, null, null, null },
@@ -97,7 +100,7 @@ public class SwingSurface extends JPanel implements Surface {
 		dataBaseTree.addTreeSelectionListener(e -> {
 			DefaultMutableTreeNode n = (DefaultMutableTreeNode)dataBaseTree.getLastSelectedPathComponent();
 			if(n.getChildCount() == 0){
-				
+				model.executeQuery("Select * from " + (String) n.getUserObject());
 			}
 		});
 		dataBaseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -113,9 +116,14 @@ public class SwingSurface extends JPanel implements Surface {
 	}
 
 	@Override
-	public void updateDataList() {
-		// TODO Auto-generated method stub
-		
+	public void updateDataList(Object[][] data, String[] columnNames) {
+		dataTable.setModel(new DefaultTableModel(data, columnNames));
+		repaint();
+	}
+	
+	@Override
+	public void setModel(Model model) {
+		this.model = model;
 	}
 
 }

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Connector {
 
 	private Connection connection;
-	
+
 	public Connector() {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -17,31 +17,18 @@ public class Connector {
 			e.printStackTrace();
 		}
 	}
-	
-	public boolean connect(String path) {
-		try {
-			connection = DriverManager.getConnection("jdbc:sqlite:" + path);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+
+	public void connect(String path) throws SQLException {
+		connection = DriverManager.getConnection("jdbc:sqlite:" + path);
 	}
-	
+
 	public ResultSet getTables() throws SQLException {
 		return connection.getMetaData().getTables(null, null, "%", null);
 	}
-	
-	public ResultSet executeQuery(String query) {
-		try {
-			return connection.createStatement().executeQuery(query);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+
+	public ResultSet executeQuery(String query) throws SQLException {
+		return connection.createStatement().executeQuery(query);
 	}
-	
 
 	public void closeConnection() {
 		try {
