@@ -47,7 +47,6 @@ public class Model {
 		String tableName = "";
 		String limitString;
 		query = query.toLowerCase();
-		System.out.println(query);
 		
 		if(connectionEnabled) {
 			if(!limitEnabled) {

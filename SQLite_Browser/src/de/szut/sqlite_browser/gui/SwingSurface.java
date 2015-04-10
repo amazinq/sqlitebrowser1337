@@ -92,6 +92,10 @@ public class SwingSurface extends JPanel implements Surface {
 			model.executeQuery(commandTextField.getText(), limitCheckBox.isSelected(), limitLowerBoundTextField.getText(), limitUpperBoundTextField.getText());
 
 		});
+		
+		commandTextField.addActionListener(e -> {
+			model.executeQuery(commandTextField.getText(), limitCheckBox.isSelected(), limitLowerBoundTextField.getText(), limitUpperBoundTextField.getText());
+		});
 
 		tableScrollPane = new JScrollPane();
 		dataPanel.add(tableScrollPane, BorderLayout.CENTER);
