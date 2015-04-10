@@ -55,7 +55,7 @@ public class Model {
 				upperBound = null;
 			} else {
 				if(!isAValidNumber(lowerBound, upperBound)) {
-					surface.showErrorMessage("Limit bounds are unvalid! Both have to be a number greater than 0 and upper bound must be greater than lower bound!");
+					surface.showErrorMessage("Limit bounds are invalid! Both have to be a number greater than 0 and upper bound must be greater than lower bound!");
 					return;
 				}
 			}
