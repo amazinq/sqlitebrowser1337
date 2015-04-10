@@ -13,11 +13,13 @@ public class Model {
 	private Connector connector;
 	private Surface surface;
 	private ArrayList<String> tableNames;
+	private boolean connectionEnabled;
 
 	public Model(Surface surface) {
 		connector = new Connector();
 		this.surface = surface;
 		tableNames = new ArrayList<String>();
+		connectionEnabled = false;
 	}
 
 	public void openConnection(String path) {
@@ -27,15 +29,16 @@ public class Model {
 				while(tables.next()) {
 					tableNames.add(tables.getString(3));
 				}
+				connectionEnabled = true;
 				surface.updateTree(tableNames);
-				surface.setConnectionEnabled(true);
+				surface.setConnectionEnabled(connectionEnabled);
 			} catch (SQLException e) {
-				surface.setConnectionEnabled(false);
+				surface.setConnectionEnabled(connectionEnabled);
 				e.printStackTrace();
 			}
 	}
 	
-	public void executeQuery(String query, String lowerBound, String upperBound) {
+	public void executeQuery(String query, boolean limitEnabled, String lowerBound, String upperBound) {
 		Object[][] data;
 		String[] columnNames;
 		ResultSet queryResult;
@@ -46,12 +49,26 @@ public class Model {
 		query = query.toLowerCase();
 		System.out.println(query);
 		
+		if(connectionEnabled) {
+			if(!limitEnabled) {
+				lowerBound = null;
+				upperBound = null;
+			} else {
+				if(!isAValidNumber(lowerBound, upperBound)) {
+//					ERRORMESSAGE!!! INVALID NUMBER
+					return;
+				}
+			}
+		} else {
+//			ERRORMESSAGE!!! NO CONNECTION
+			return;
+		}
+		
 		if(lowerBound == null || upperBound == null ||query.contains("limit")) {
 			limitString = "";
 		} else {
 //			ÜBERLEGEN WEGEN LIMIT!!!!
-			limitString = " limit " + lowerBound
-					+" , " + (String.valueOf((Integer.parseInt(upperBound) - Integer.parseInt(lowerBound)+1)));
+			limitString = " limit " + lowerBound +" , " + (String.valueOf((Integer.parseInt(upperBound) - Integer.parseInt(lowerBound))));
 		}
 		
 		
@@ -102,12 +119,29 @@ public class Model {
 	public void closeConnection() {
 		try {
 			connector.closeConnection();
+			connectionEnabled = false;
 			surface.updateDataList(null, null);
 			surface.setConnectionEnabled(false);
 			surface.clearTree();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	private boolean isAValidNumber(String lowerBound, String upperBound) {
+		try {
+			int tempLowerBound = Integer.parseInt(lowerBound);
+			int tempUpperBound = Integer.parseInt(upperBound);
+			if (tempLowerBound < 0 || tempUpperBound < 0) {
+				return false;
+			}
+			if (tempUpperBound < tempLowerBound) {
+				return false;
+			}
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 }
