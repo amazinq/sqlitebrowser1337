@@ -16,4 +16,6 @@ public interface Surface {
 	
 	public void clearTree();
 	
+	public void showErrorMessage(String errorMessage);
+	
 }

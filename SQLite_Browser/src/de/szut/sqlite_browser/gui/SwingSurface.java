@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -146,11 +147,17 @@ public class SwingSurface extends JPanel implements Surface {
 
 	@Override
 	public void clearTree() {
-		int x = topNode.getChildCount();
-		for (int i = 0; i < x; i++) {
+		int amountOfChilds = topNode.getChildCount();
+		for (int i = 0; i < amountOfChilds; i++) {
 			topNode.remove(0);
 		}
 		dataBaseTree.repaint();
 		dataBaseTree.collapsePath(new TreePath(topNode.getPath()));
+	}
+
+	@Override
+	public void showErrorMessage(String errorMessage) {
+		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+		
 	}
 }

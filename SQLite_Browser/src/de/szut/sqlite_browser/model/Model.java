@@ -34,7 +34,7 @@ public class Model {
 				surface.setConnectionEnabled(connectionEnabled);
 			} catch (SQLException e) {
 				surface.setConnectionEnabled(connectionEnabled);
-				e.printStackTrace();
+				surface.showErrorMessage("Error while connecting to Database!");
 			}
 	}
 	
@@ -55,12 +55,12 @@ public class Model {
 				upperBound = null;
 			} else {
 				if(!isAValidNumber(lowerBound, upperBound)) {
-//					ERRORMESSAGE!!! INVALID NUMBER
+					surface.showErrorMessage("Limit bounds are unvalid! Both have to be a number greater than 0 and upper bound must be greater than lower bound!");
 					return;
 				}
 			}
 		} else {
-//			ERRORMESSAGE!!! NO CONNECTION
+			surface.showErrorMessage("No connection enabled!");
 			return;
 		}
 		
@@ -111,21 +111,23 @@ public class Model {
 			numberOfRows.close();
 			surface.updateDataList(data, columnNames);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			surface.showErrorMessage("Query could not be executed! Might be caused by a typing error.");
 		}
 	}
 	
 	public void closeConnection() {
-		try {
-			connector.closeConnection();
-			connectionEnabled = false;
-			surface.updateDataList(null, null);
-			surface.setConnectionEnabled(false);
-			surface.clearTree();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(connectionEnabled) {
+			try {
+				connector.closeConnection();
+				connectionEnabled = false;
+				surface.updateDataList(null, null);
+				surface.setConnectionEnabled(false);
+				surface.clearTree();
+			} catch (SQLException e) {
+				surface.showErrorMessage("Error while closing the connection!");
+			}
+		} else {
+			surface.showErrorMessage("No connection enabled!");
 		}
 	}
 	
