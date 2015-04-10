@@ -41,15 +41,16 @@ public class Model {
 		ResultSet queryResult;
 		ResultSet numberOfRows;
 		ResultSetMetaData queryResultMetaData;
-		String tableName;
+		String tableName = "";
 		String limitString;
 		query = query.toLowerCase();
+		System.out.println(query);
 		
 		if(lowerBound == null || upperBound == null ||query.contains("limit")) {
 			limitString = "";
 		} else {
 //			ÜBERLEGEN WEGEN LIMIT!!!!
-			limitString = " limit " + String.valueOf(Integer.parseInt(lowerBound) -1)
+			limitString = " limit " + lowerBound
 					+" , " + (String.valueOf((Integer.parseInt(upperBound) - Integer.parseInt(lowerBound)+1)));
 		}
 		
@@ -59,12 +60,21 @@ public class Model {
 			queryResult = connector.executeQuery(query + limitString);
 			String[] queryArray = query.split(" ");
 			
-			int iterator = 0;
-			while(!queryArray[iterator].contains("from")) {
-				iterator++;
+			int startOffset = 0;
+			int endOffset = 0;
+			while(!queryArray[startOffset].contains("from")) {
+				startOffset++;
+				endOffset++;
 			}
-			
-			tableName = queryArray[iterator +1];
+			if(queryArray[startOffset +1].startsWith("'") || queryArray[startOffset +1].startsWith(String.valueOf('"'))) {
+				while(!queryArray[endOffset +1].endsWith("'") && !queryArray[endOffset +1].endsWith(String.valueOf('"'))) {
+					endOffset++;
+				}
+			}
+			for(int iterator = startOffset; iterator <= endOffset; iterator++) {
+				tableName = tableName + " " + queryArray[iterator +1];
+				
+			}
 			numberOfRows = connector.executeQuery("Select count(*) from " + tableName);
 			queryResultMetaData = queryResult.getMetaData();
 			numberOfRows.next();

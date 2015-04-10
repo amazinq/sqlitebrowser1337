@@ -127,14 +127,14 @@ public class SwingSurface extends JPanel implements Surface {
 					String upperBound = limitUpperBoundTextField.getText();
 					if (isAValidNumber(lowerBound, upperBound)) {
 						if (n.getChildCount() == 0) {
-							model.executeQuery("Select * from " + (String) n.getUserObject(), lowerBound, upperBound);
+							model.executeQuery("Select * from " + "'" + (String) n.getUserObject() + "'", lowerBound, upperBound);
 						}
 					} else {
 //						ERRORMESSAGE!! invalid number
 					}
 				} else {
 					if (n.getChildCount() == 0) {
-						model.executeQuery("Select * from " + (String) n.getUserObject(), null, null);
+						model.executeQuery("Select * from " + "'" + (String) n.getUserObject() + "'", null, null);
 					}
 				}
 			} else {
