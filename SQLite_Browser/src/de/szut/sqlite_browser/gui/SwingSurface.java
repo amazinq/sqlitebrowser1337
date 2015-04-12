@@ -103,6 +103,7 @@ public class SwingSurface extends JPanel implements Surface {
 		dataTable.getTableHeader().setReorderingAllowed(false);
 		dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		dataTable.setAutoCreateRowSorter(true);
+		dataTable.setEnabled(false);
 		tableScrollPane.setViewportView(dataTable);
 
 		JScrollPane treeScrollPane = new JScrollPane();
