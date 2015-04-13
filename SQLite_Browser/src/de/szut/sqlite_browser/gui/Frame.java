@@ -9,14 +9,17 @@ import javax.swing.JPanel;
 
 import de.szut.sqlite_browser.dataOperation.PropertyLoader;
 
+/**
+ * Main GUI component
+ * @author Steffen Wiﬂmann
+ *
+ */
 public class Frame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 5836166086363876139L;
 	
 	/**
-	 * Create the frame.
+	 * Create the frame and defining an actionlistener which saves the properties while closing the window
 	 */
 	public Frame(Surface panel, JMenuBar menuBar, PropertyLoader propertyLoader) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

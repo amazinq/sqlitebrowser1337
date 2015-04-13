@@ -7,8 +7,17 @@ import de.szut.sqlite_browser.gui.Surface;
 import de.szut.sqlite_browser.gui.SwingSurface;
 import de.szut.sqlite_browser.model.Model;
 
+/**
+ * main method to execute the application
+ * @author Steffen Wiﬂmann
+ *
+ */
 public class Main {
 
+	/**
+	 * building all needed objects 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Surface surface = new SwingSurface();
 		Model model = new Model(surface);

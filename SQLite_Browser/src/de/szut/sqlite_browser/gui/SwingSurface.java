@@ -22,6 +22,11 @@ import javax.swing.tree.TreeSelectionModel;
 
 import de.szut.sqlite_browser.model.Model;
 
+/**
+ * Surface for the application which implements the surface interface
+ * @author Steffen Wiﬂmann
+ *
+ */
 public class SwingSurface extends JPanel implements Surface {
 
 	/**
@@ -43,6 +48,9 @@ public class SwingSurface extends JPanel implements Surface {
 	private JSplitPane splitPane;
 	private JCheckBox limitCheckBox;
 
+	/**
+	 * Create the surface and all components
+	 */
 	public SwingSurface() {
 
 		setLayout(new BorderLayout(0, 0));

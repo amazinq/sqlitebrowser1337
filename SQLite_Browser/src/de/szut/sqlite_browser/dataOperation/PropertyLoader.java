@@ -7,6 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * class responsible for loading and saving properties
+ * @author Steffen Wiﬂmann
+ *
+ */
 public class PropertyLoader {
 
 	private static final String CONFIG_FILE_PATH = "config/config.ini";
@@ -20,6 +25,9 @@ public class PropertyLoader {
 	private File file;
 	private FileInputStream fileInputStream;
 	
+	/**
+	 * loads propertys. If any errors appear, default properties will be set instead
+	 */
 	public PropertyLoader() {
 		properties = new Properties();
 		file = new File(CONFIG_FILE_PATH);
@@ -33,19 +41,24 @@ public class PropertyLoader {
 					Integer.parseInt(properties.getProperty(SIZE_X_KEY)), 
 					Integer.parseInt(properties.getProperty(SIZE_Y_KEY)));
 			
-		} catch (IOException e) {
-			windowDimension = new Rectangle();
-			windowDimension.setBounds(100, 100, 868, 582);
-		} catch(NullPointerException e) {
+		} catch (Exception e) {
 			windowDimension = new Rectangle();
 			windowDimension.setBounds(100, 100, 868, 582);
 		}
 	}
 	
+	/**
+	 * returns the properties
+	 * @return windowsize and position 
+	 */
 	public Rectangle getWindowDimension() {
 		return windowDimension;
 	}
 	
+	/**
+	 * writes the properties in the default propertyfile
+	 * @param dimension rectangle consisting of width height and absolute positions
+	 */
 	public void setWindowDimension(Rectangle dimension) {
 		windowDimension = dimension;
 		properties.setProperty(POSITION_X_KEY, String.valueOf(windowDimension.getX()));
@@ -55,8 +68,6 @@ public class PropertyLoader {
 		try {
 			properties.store(new FileOutputStream(file), null);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 	}
 }

@@ -11,7 +11,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.szut.sqlite_browser.model.Model;
 
-
+/**
+ * JMenubar offering options
+ * @author Steffen Wiﬂmann
+ *
+ */
 public class Menu extends JMenuBar {
 
 	
