@@ -26,6 +26,8 @@ public class Main {
 		Model model = new Model(surface);
 		PropertyLoader propertyLoader = new PropertyLoader();
 		surface.setModel(model);
+		// Creating GUI in ONE event dispatch thread is necessary because
+		// it might cause bugs if its not done correctly (like disappearing GUI components)
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
