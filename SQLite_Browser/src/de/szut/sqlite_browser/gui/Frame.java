@@ -24,6 +24,7 @@ public class Frame extends JFrame {
 	public Frame(Surface panel, JMenuBar menuBar, PropertyLoader propertyLoader) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(propertyLoader.getWindowDimension());
+		setTitle("SQLite Browser");
 		setVisible(true);
 		setContentPane((JPanel)panel);
 		setJMenuBar(menuBar);

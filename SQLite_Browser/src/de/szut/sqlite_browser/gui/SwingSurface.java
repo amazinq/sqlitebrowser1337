@@ -174,4 +174,10 @@ public class SwingSurface extends JPanel implements Surface {
 		JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
 		
 	}
+
+	@Override
+	public void showSuccessfullyUpdatedMessage(String updateMessage) {
+		JOptionPane.showMessageDialog(this, updateMessage, "Updated", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
 }

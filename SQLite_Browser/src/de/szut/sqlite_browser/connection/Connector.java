@@ -49,8 +49,17 @@ public class Connector {
 	 * @return resultset consisting of data, which was returned by the database based on the entered SQL query
 	 * @throws SQLException needs to be handled by the instantiating class
 	 */
-	public ResultSet executeQuery(String query) throws SQLException {
+	public ResultSet executeSelectQuery(String query) throws SQLException {
 		return connection.createStatement().executeQuery(query);
+	}
+	
+	/**
+	 * executes an SQL update query (update and create)
+	 * @param query needs to be a valid SQL query
+	 * @throws SQLException needs to be handled by instantiating class
+	 */
+	public void executeUpdateQuery(String query) throws SQLException {
+		connection.createStatement().executeUpdate(query);
 	}
 
 	/**

@@ -92,49 +92,54 @@ public class Model {
 		
 		
 		try {
-			// Execute mainquery
-			queryResult = connector.executeQuery(query + limitString);
-			String[] queryArray = query.split(" ");
-			
-			// Extracting the tablename by using the from keyword
-			int startOffset = 0;
-			int endOffset = 0;
-			while(!queryArray[startOffset].contains("from")) {
-				startOffset++;
-				endOffset++;
-			}
-			if(queryArray[startOffset +1].startsWith("'") || queryArray[startOffset +1].startsWith(String.valueOf('"'))) {
-				while(!queryArray[endOffset +1].endsWith("'") && !queryArray[endOffset +1].endsWith(String.valueOf('"'))) {
+			if(query.startsWith("select")) {
+				// Execute mainquery
+				queryResult = connector.executeSelectQuery(query + limitString);
+				String[] queryArray = query.split(" ");
+				
+				// Extracting the tablename by using the from keyword
+				int startOffset = 0;
+				int endOffset = 0;
+				while(!queryArray[startOffset].contains("from")) {
+					startOffset++;
 					endOffset++;
 				}
-			}
-			for(int iterator = startOffset; iterator <= endOffset; iterator++) {
-				tableName = tableName + " " + queryArray[iterator +1];
-				
-			}
-			
-			// Subquery to obtain the number of rows in the selected table
-			numberOfRows = connector.executeQuery("Select count(*) from " + tableName);
-			queryResultMetaData = queryResult.getMetaData();
-			numberOfRows.next();
-			columnNames = new String[queryResultMetaData.getColumnCount()];
-			// Extracting the Columnnames
-			for(int i = 1; i <= queryResultMetaData.getColumnCount(); i++) {
-				columnNames[i-1] = queryResultMetaData.getColumnName(i);
-			}
-			data = new Object[numberOfRows.getInt(1)][queryResultMetaData.getColumnCount()];
-			int counter = 0;
-			// Extracting the tabledata 
-			while(queryResult.next()) {
-				for(int i = 0; i < queryResultMetaData.getColumnCount(); i++) {
-					data[counter][i] = queryResult.getString(i+1);
+				if(queryArray[startOffset +1].startsWith("'") || queryArray[startOffset +1].startsWith(String.valueOf('"'))) {
+					while(!queryArray[endOffset +1].endsWith("'") && !queryArray[endOffset +1].endsWith(String.valueOf('"'))) {
+						endOffset++;
+					}
 				}
-				counter++;
+				for(int iterator = startOffset; iterator <= endOffset; iterator++) {
+					tableName = tableName + " " + queryArray[iterator +1];
+					
+				}
+				
+				// Subquery to obtain the number of rows in the selected table
+				numberOfRows = connector.executeSelectQuery("Select count(*) from " + tableName);
+				queryResultMetaData = queryResult.getMetaData();
+				numberOfRows.next();
+				columnNames = new String[queryResultMetaData.getColumnCount()];
+				// Extracting the Columnnames
+				for(int i = 1; i <= queryResultMetaData.getColumnCount(); i++) {
+					columnNames[i-1] = queryResultMetaData.getColumnName(i);
+				}
+				data = new Object[numberOfRows.getInt(1)][queryResultMetaData.getColumnCount()];
+				int counter = 0;
+				// Extracting the tabledata 
+				while(queryResult.next()) {
+					for(int i = 0; i < queryResultMetaData.getColumnCount(); i++) {
+						data[counter][i] = queryResult.getString(i+1);
+					}
+					counter++;
+				}
+				queryResult.close();
+				numberOfRows.close();
+				// Update the GUI
+				surface.updateDataList(data, columnNames);
+			} else if(query.startsWith("update") || query.startsWith("create")) {
+				connector.executeUpdateQuery(query);
+				surface.showSuccessfullyUpdatedMessage("Database successfully edited");
 			}
-			queryResult.close();
-			numberOfRows.close();
-			// Update the GUI
-			surface.updateDataList(data, columnNames);
 		} catch (SQLException e) {
 			surface.showErrorMessage(INVALID_QUERY_ERROR_MESSAGE);
 		}

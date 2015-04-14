@@ -49,4 +49,10 @@ public interface Surface {
 	 */
 	public void showErrorMessage(String errorMessage);
 	
+	/**
+	 * notifys the user that the selected table has been successfully updated
+	 * @param updateMessage
+	 */
+	public void showSuccessfullyUpdatedMessage(String updateMessage);
+	
 }

@@ -1,5 +1,7 @@
 package de.szut.sqlite_browser.main;
 
+import java.awt.EventQueue;
+
 import de.szut.sqlite_browser.dataOperation.PropertyLoader;
 import de.szut.sqlite_browser.gui.Frame;
 import de.szut.sqlite_browser.gui.Menu;
@@ -19,10 +21,20 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		Surface surface = new SwingSurface();
 		Model model = new Model(surface);
+		PropertyLoader propertyLoader = new PropertyLoader();
 		surface.setModel(model);
-		new Frame(surface, new Menu(model), new PropertyLoader());
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new Frame(surface, new Menu(model), propertyLoader);				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 	}
 
